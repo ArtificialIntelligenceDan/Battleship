@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -27,40 +28,56 @@ int shipGrid[SIZE][SIZE][2];
 //           ROWS  COLS  ^ 0=Opponent 1=Player
 int hitGrid[SIZE][SIZE][2];
 
-int PlaceShip(int ship, int grid, int orient, int row, int col){
-    int canPlace = 0;
-
-    if (orient == HORIZONTAL){
+int IsOnGrid(int ship, int grid){ // Check if ship is already on grid
+    int isOnGrid = 0;
+    int y;
+    for (y = 0; y < SIZE; y++){
         int x;
-        for (x = col; x < col+LENGTH[ship]; x++){
-            if (x >= SIZE || shipGrid[x][row][grid] != 0){
-                canPlace = 0;
-                break;
-            }
-            canPlace = 1;
-        }
-        
-        if (canPlace){
-            for (x = col; x < col+LENGTH[ship]; x++){
-                shipGrid[x][row][grid] = ship;
+        for (x = 0; x < SIZE; x++){
+            if (shipGrid[x][y][grid] == ship){
+                isOnGrid = 1;
             }
         }
     }
-    else if (orient == VERTICAL){
-        int y;
-        
-        // Check if can place
-        for (y = row; y < row+LENGTH[ship]; y++){
-            if (y >= SIZE || shipGrid[col][y][grid] != 0){
-                canPlace = 0;
-                break;
+    return isOnGrid;
+}
+
+int PlaceShip(int ship, int grid, int orient, int row, int col){ // Place ship
+    int canPlace = 0;
+    
+    if (IsOnGrid(ship,grid) == 0){ // If ship isn't already on grid
+        if (orient == HORIZONTAL){
+            int x;
+            for (x = col; x < col+LENGTH[ship]; x++){
+                if (x >= SIZE || shipGrid[x][row][grid] != 0){
+                    canPlace = 0;
+                    break;
+                }
+                canPlace = 1;
             }
-            canPlace = 1;
+            
+            if (canPlace){
+                for (x = col; x < col+LENGTH[ship]; x++){
+                    shipGrid[x][row][grid] = ship;
+                }
+            }
         }
-        
-        if (canPlace){
+        else if (orient == VERTICAL){
+            int y;
+            
+            // Check if can place
             for (y = row; y < row+LENGTH[ship]; y++){
-                shipGrid[col][y][grid] = ship; // Place ship in slots
+                if (y >= SIZE || shipGrid[col][y][grid] != 0){
+                    canPlace = 0;
+                    break;
+                }
+                canPlace = 1;
+            }
+            
+            if (canPlace){
+                for (y = row; y < row+LENGTH[ship]; y++){
+                    shipGrid[col][y][grid] = ship; // Place ship in slots
+                }
             }
         }
     }
@@ -68,7 +85,7 @@ int PlaceShip(int ship, int grid, int orient, int row, int col){
     return canPlace;
 }
 
-void DrawGrid(int grid){
+void DrawGrid(int grid){ // Print all values in ship grid
     int y;
     for (y = 0; y < SIZE; y++){
         int x;
@@ -80,7 +97,7 @@ void DrawGrid(int grid){
 
 }
 
-void DrawHitGrid(int grid){
+void DrawHitGrid(int grid){ // Print all values in hit grid
     int y;
     for (y = 0; y < SIZE; y++){
         int x;
@@ -92,7 +109,7 @@ void DrawHitGrid(int grid){
 
 }
 
-void RandomPlace(int ship, int grid){
+void RandomPlace(int ship, int grid){ // Place ship at random
     int x, y;
     x = rand()%(SIZE-LENGTH[ship])+0;
     y = rand()%(SIZE-LENGTH[ship])+0;
@@ -114,7 +131,25 @@ void RandomPlace(int ship, int grid){
     }
 }
 
-int Hit(int row, char col, int grid){
+void ClearGrid(int grid){ // Reset entire grid
+    int y;
+    for (y = 0; y < SIZE; y++){
+        int x;
+        for (x = 0; x < SIZE; x++){
+            shipGrid[x][y][grid] = 0;
+        }
+    }
+}
+
+void RandomPlaceAll(int grid){ // Place all ships at random
+    ClearGrid(grid);
+    int i;
+    for (i = 1; i <= 5; i++){
+        RandomPlace(i, grid);
+    }
+}
+
+int Hit(int row, char col, int grid){ // Check if space has been hit
     if (shipGrid[row][col-65][grid] != 0){
         hitGrid[row][col-65][grid] = 1;
         return 1;
@@ -124,9 +159,10 @@ int Hit(int row, char col, int grid){
     }
 }
 
-int IsDestroyed(int ship, int grid){
+int IsSunk(int ship, int grid){ // Check if ship has been sunk
     int y;
     int hits = 0;
+    
     for (y = 0; y < SIZE; y++){
         int x;
         for (x = 0; x < SIZE; x++){
@@ -135,7 +171,7 @@ int IsDestroyed(int ship, int grid){
             }
         }
     }
-    printf("\n%d\n",hits);
+    
     if (hits >= LENGTH[ship]){
         return 1;
     }
@@ -148,22 +184,9 @@ int main()
 {
     srand(time(NULL));
     
-    int i;
-    for (i = 1; i <= 5; i++){
-        RandomPlace(i, PLAYER);
-    }
+    RandomPlaceAll(PLAYER);
     
     DrawGrid(PLAYER);
-    printf("\n");
-    int y, isHit;
-    for (y = 0; y < SIZE; y++){
-        int x;
-        for (x = 65; x < SIZE + 65; x++){
-            isHit = Hit(y, x, PLAYER);
-        }
-    }
-    DrawHitGrid(PLAYER);
-    printf("\n%d",IsDestroyed(BATTLESHIP, PLAYER));
 
     return 0;
 }
