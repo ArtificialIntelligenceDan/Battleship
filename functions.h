@@ -197,13 +197,41 @@ int HitRandom(int grid){ // Hits a random, unhit space
     Hit(row,col,grid);
 }
 
-int SmartHit(int prevRow, int prevCol, int dir, int grid){
+typedef struct hitInfo{
+    int hit;
+    int prevRow;
+    int prevCol;
+} HitInfo;
+
+HitInfo SmartHit(int prevRow, int prevCol, int grid){
     /* Hits according the last space hit and whether or not it knows
     the direction of the ship it hit */
     
-    if (hitGrid[prevRow][prevCol][grid] == 1){
-        int row = prevRow
-        int col = prevCol
+    HitInfo info;
+    int hit;
+    
+    int row = prevRow;
+    int col = prevCol;
+    
+    printf("\nPrevHit: %d\n",hitGrid[prevCol][prevRow][grid]);
+    
+    if (hitGrid[prevCol][prevRow][grid] == 1){
+        int dir = -1;
+        if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 1){
+            dir = HORIZONTAL;
+        }
+        else if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 1){
+            dir = HORIZONTAL;
+        }
+        else if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 1){
+            dir = VERTICAL;
+        }
+        else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 1){
+            dir = VERTICAL;
+        }
+        
+        printf("\nDir: %d\n",dir);
+        
         if (dir == HORIZONTAL){
             int shiftDir = rand()%2;
             if (shiftDir == 0){ // Left
@@ -212,7 +240,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
                 else{
                     do{
@@ -221,7 +249,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
             }
             else{ // Right
@@ -230,7 +258,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
                 else{
                     do{
@@ -239,7 +267,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
             }
         }
@@ -251,7 +279,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
                 else{
                     do{
@@ -260,7 +288,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
             }
             else{ // Down
@@ -269,7 +297,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
                 else{
                     do{
@@ -278,7 +306,7 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
-                    Hit(row,col,grid);
+                    hit = Hit(row,col,grid);
                 }
             }
         }
@@ -286,23 +314,23 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
             int shiftDir = rand()%4;
             switch (shiftDir){
                 case 0: // Left
-                    if (IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 0){
-                        Hit(row,col-1,grid);
+                    if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 0){
+                        hit = Hit(row,col-1,grid);
                         break;
                     }
                 case 1: // Right
-                    if (IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 0){
-                        Hit(row,col+1,grid);
+                    if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 0){
+                        hit = Hit(row,col+1,grid);
                         break;
                     }
                 case 2: // Up
-                    if (IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 0){
-                        Hit(row-1,col,grid);
+                    if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 0){
+                        hit = Hit(row-1,col,grid);
                         break;
                     }
                 case 3: // Down
-                    if (IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 0){
-                        Hit(row+1,col,grid);
+                    if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 0){
+                        hit = Hit(row+1,col,grid);
                         break;
                     }
                 default:
@@ -312,8 +340,14 @@ int SmartHit(int prevRow, int prevCol, int dir, int grid){
         }
     }
     else{
-        HitRandom(grid);
+        hit = HitRandom(grid);
     }
+    
+    info.hit = hit;
+    info.prevRow = row;
+    info.prevCol = col;
+    
+    return info;
 }
 
 int IsSunk(int ship, int grid){ // Check if ship has been sunk
