@@ -188,9 +188,131 @@ int Hit(int row, int col, int grid){ // Hit a space, 0=Miss 1=Hit
     }
 }
 
-int SmartHit(int prevRow, int prevCol, int dir){
-    if (IsInsideGrid(prevRow, prevCol)){
-        
+int HitRandom(int grid){ // Hits a random, unhit space
+    int row,col;
+    do{
+        row = rand()%SIZE+0;
+        col = rand()%SIZE+0;
+    } while(hitGrid[col][row][grid] != 0);
+    Hit(row,col,grid);
+}
+
+int SmartHit(int prevRow, int prevCol, int dir, int grid){
+    /* Hits according the last space hit and whether or not it knows
+    the direction of the ship it hit */
+    
+    if (hitGrid[prevRow][prevCol][grid] == 1){
+        int row = prevRow
+        int col = prevCol
+        if (dir == HORIZONTAL){
+            int shiftDir = rand()%2;
+            if (shiftDir == 0){ // Left
+                while(IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 1){
+                    col--;
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+                else{
+                    do{
+                        col++;
+                    } while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1);
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+            }
+            else{ // Right
+                while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1){
+                    col++;
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+                else{
+                    do{
+                        col--;
+                    } while(IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 1);
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+            }
+        }
+        else if (dir == VERTICAL){
+            int shiftDir = rand()%2;
+            if (shiftDir == 0){ // Up
+                while(IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 1){
+                    row--;
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+                else{
+                    do{
+                        row++;
+                    } while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1);
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+            }
+            else{ // Down
+                while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1){
+                    row++;
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+                else{
+                    do{
+                        row--;
+                    } while(IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 1);
+                }
+                
+                if (hitGrid[col][row][grid] == 0){
+                    Hit(row,col,grid);
+                }
+            }
+        }
+        else{ // If direction not known
+            int shiftDir = rand()%4;
+            switch (shiftDir){
+                case 0: // Left
+                    if (IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 0){
+                        Hit(row,col-1,grid);
+                        break;
+                    }
+                case 1: // Right
+                    if (IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 0){
+                        Hit(row,col+1,grid);
+                        break;
+                    }
+                case 2: // Up
+                    if (IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 0){
+                        Hit(row-1,col,grid);
+                        break;
+                    }
+                case 3: // Down
+                    if (IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 0){
+                        Hit(row+1,col,grid);
+                        break;
+                    }
+                default:
+                    printf("Something is wrong! No 1x1 ships allowed!");
+                    break;
+            }
+        }
+    }
+    else{
+        HitRandom(grid);
     }
 }
 
@@ -216,8 +338,8 @@ int IsSunk(int ship, int grid){ // Check if ship has been sunk
 }
 
 int AllSunk(int grid){ // Returns 1 if all ships on grid are sunk
-    int sunkAmt = 0
-    int allSunk = 0
+    int sunkAmt = 0;
+    int allSunk = 0;
     int ship;
     for (ship = 1; ship <= 5; ship++){
         if (IsSunk(ship, grid)){
@@ -225,7 +347,7 @@ int AllSunk(int grid){ // Returns 1 if all ships on grid are sunk
         }
     }
     
-    if (sunk >= 5){
+    if (sunkAmt >= 5){
         allSunk = 1;
     }
     
