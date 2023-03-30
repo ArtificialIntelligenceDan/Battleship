@@ -169,6 +169,14 @@ void RandomPlaceAll(int grid){ // Place all ships at random
     }
 }
 
+int IsInsideGrid(int row, int col){
+    int inside = 0;
+    if (row < SIZE-1 && col < SIZE-1){
+        inside = 1;
+    }
+    return inside;
+}
+
 int Hit(int row, int col, int grid){ // Hit a space, 0=Miss 1=Hit
     if (shipGrid[col][row][grid] != 0){
         hitGrid[col][row][grid] = 1;
@@ -177,6 +185,12 @@ int Hit(int row, int col, int grid){ // Hit a space, 0=Miss 1=Hit
     else{
         hitGrid[col][row][grid] = -1;
         return 0;
+    }
+}
+
+int SmartHit(int prevRow, int prevCol, int dir){
+    if (IsInsideGrid(prevRow, prevCol)){
+        
     }
 }
 
@@ -201,7 +215,24 @@ int IsSunk(int ship, int grid){ // Check if ship has been sunk
     }
 }
 
-void UpdateDisplayGrid(int grid){
+int AllSunk(int grid){ // Returns 1 if all ships on grid are sunk
+    int sunkAmt = 0
+    int allSunk = 0
+    int ship;
+    for (ship = 1; ship <= 5; ship++){
+        if (IsSunk(ship, grid)){
+            sunkAmt++;
+        }
+    }
+    
+    if (sunk >= 5){
+        allSunk = 1;
+    }
+    
+    return allSunk;
+}
+
+void UpdateDisplayGrid(int grid){ // Update the specified displayGrid array 
     int y;
     for (y = 0; y < 10; y++){
         int x;
@@ -244,7 +275,7 @@ void UpdateDisplayGrid(int grid){
 }
 
 
-void DisplayGrids(){
+void DisplayGrids(){ // Display both grids on the screen side-by-side
     UpdateDisplayGrid(PLAYER);
     UpdateDisplayGrid(OPPONENT);
     
