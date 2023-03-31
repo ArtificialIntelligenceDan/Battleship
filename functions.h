@@ -347,9 +347,9 @@ HitInfo SmartHit(HitInfo info, int grid){
         }
         
         // if (hit){
-        //     info.hit = hit;
-        //     info.prevRow = row;
-        //     info.prevCol = col;
+        info.hit = hit;
+        info.prevRow = row;
+        info.prevCol = col;
         // }
     }
     else{
