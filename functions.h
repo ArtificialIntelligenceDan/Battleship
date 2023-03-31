@@ -193,7 +193,6 @@ typedef struct hitInfo{
     int prevRow;
     int prevCol;
     int sunk;
-    int lastHit;
 } HitInfo;
 
 HitInfo HitRandom(int grid){ // Hits a random, unhit space
@@ -222,23 +221,21 @@ HitInfo SmartHit(HitInfo info, int grid){
     int hit = info.hit;
     int sunk = info.sunk;
     
-    int lastHit = info.lastHit;
-    
     int row = prevRow;
     int col = prevCol;
     
-    if (info.lastHit == 1 && info.sunk == 0){
+    if (hitGrid[prevCol][prevRow][grid] == 1 && info.sunk == 0){
         int dir = -1;
-        if (IsInsideGrid(row,col-1) && info.lastHit){
+        if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 1){
             dir = HORIZONTAL;
         }
-        else if (IsInsideGrid(row,col+1) && info.lastHit){
+        else if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 1){
             dir = HORIZONTAL;
         }
-        else if (IsInsideGrid(row-1,col) && info.lastHit){
+        else if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 1){
             dir = VERTICAL;
         }
-        else if (IsInsideGrid(row+1,col) && info.lastHit){
+        else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 1){
             dir = VERTICAL;
         }
         
@@ -351,7 +348,6 @@ HitInfo SmartHit(HitInfo info, int grid){
         
         info.hit = hit;
         if (hit){
-            info.lastHit = hit;
             info.prevRow = row;
             info.prevCol = col;
             info.sunk = info.hit ? IsSunk(shipGrid[col][row][grid], grid) : 0;
