@@ -8,13 +8,15 @@
 int main()
 {
     srand(time(NULL));
-
+    DisplayTitle();
+    sleep(3);
 
 
     RandomPlaceAll(OPPONENT);
 
     DisplayGrids();
     int i, ansPlace = 0, orientation, row, canPlace = 0, rowCheck, orientationCheck, placeCheck;
+    HitInfo info;
     char col;
     int carCount = 0;
     int crCount = 0;
@@ -60,7 +62,7 @@ int main()
 	    while(col < 65 || col > 74){
               printf("Try Again.\nChoose a Column: ");
               scanf("%*c%c", &col);
- 	    } 
+	    } 
             printf("Choose a Row: ");
             rowCheck = scanf("%d", &row);
 	    while(row < 1 || row > 10 || rowCheck != 1){
@@ -107,11 +109,9 @@ int main()
         RandomPlaceAll(PLAYER);
         DisplayGrids();
     }
-
+	DrawGrid(OPPONENT);    
     int hitRow, ranRow, ranCol, hit, ranHit;     // Player turn
     char hitCol;
-    printf("Done\n");
-    DrawGrid(OPPONENT);
 
     while(AllSunk(PLAYER) == 0 && AllSunk(OPPONENT) == 0){
 
@@ -131,7 +131,6 @@ int main()
       }
 	
       hit = Hit(hitRow-1, hitCol-65, OPPONENT);
-      DrawHitGrid(OPPONENT);
       DisplayGrids();
       if(hit == 1){
         printf("HIT!!!\n");
@@ -163,57 +162,63 @@ int main()
 	  }
        }
       }
+      if(AllSunk(PLAYER) == 1 || AllSunk(OPPONENT) == 1)
+	break;
     }while(hit == 1);
+    if(AllSunk(PLAYER) == 1 || AllSunk(OPPONENT) == 1)
+        break;
     sleep(1.5);
     printf("Opponents turn\n");
     sleep(1.5);			      //Computer Turn
     do{
-      ranRow = rand()%9+0;
-      ranCol = rand()%9+0;
-      ranHit = Hit(ranRow, ranCol, PLAYER);
+	info = SmartHit(info, PLAYER);
+	
+ 
       
-      if(ranHit == 1){
+      if(info.hit == 1){
 	DisplayGrids();
         printf("OPPONENT HIT A SHIP!!! \nOPPONENT TAKING ANOTHER TURN\n");
 	sleep(1.5);
       }
-      else if(ranHit == 0){
+      else if(info.hit == 0){
 	DisplayGrids();
         printf("OPPONENT MISSED YOUR SHIP!!\n");
       }
       for(i=1; i<=5; i++){
-        if(IsSunk(i, OPPONENT) == 1){
+        if(IsSunk(i, PLAYER) == 1){
           if(i == 1 && carCountO == 0){
-            printf("You Sank My Carrier!\n");
+            printf("Your Carrier Sank!\n");
             carCountO++;
           }
           if(i == 2 && bCountO == 0){
-            printf("You Sank My Battleship!\n");
+            printf("Your Battleship Sank!\n");
             bCountO++;
           }
           if(i == 3 && crCountO == 0){
-            printf("You Sank My Cruiser!\n");
+            printf("Your Cruiser Sank!\n");
             crCountO++;
           }
           if(i == 4 && sCountO == 0){
-            printf("You Sank My Submarine!\n");
+            printf("Your Submarine Sank!\n");
             sCountO++;
           }
           if(i == 5 && dCountO == 0){
-            printf("You Sank My Destroyer!\n");
+            printf("Your Destroyer Sank!\n");
             dCountO++;
           }
         }
       }
-      sleep(1.5);    
-    }while(ranHit == 1);
+      sleep(1.5);
+      if(AllSunk(PLAYER) == 1 || AllSunk(OPPONENT) == 1)
+        break;    
+    }while(info.hit == 1);
   }
 
-  printf("GAME OVER!");
+  printf("GAME OVER!\n");
   if(AllSunk(PLAYER) == 1)
-    printf("YOU LOST!");
+    printf("YOU LOST!\n");
   else if(AllSunk(OPPONENT) == 1)
-    printf("YOU WON!");
+    printf("YOU WON!\n");
   
 return 0;
 }
