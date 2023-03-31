@@ -347,16 +347,19 @@ HitInfo SmartHit(HitInfo info, int grid){
         }
         
         info.hit = hit;
+        info.sunk = info.hit ? IsSunk(shipGrid[col][row][grid], grid) : 0;
         if (hit){
             info.prevRow = row;
             info.prevCol = col;
-            info.sunk = info.hit ? IsSunk(shipGrid[col][row][grid], grid) : 0;
         }
     }
     else{
         HitInfo randInfo = HitRandom(grid);
+        info.hit = randInfo.hit;
+        info.sunk = randInfo.sunk;
         if (randInfo.hit){
-            info = randInfo;
+            info.prevRow = row;
+            info.prevCol = col;
         } 
     }
     
