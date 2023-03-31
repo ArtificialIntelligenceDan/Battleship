@@ -207,7 +207,7 @@ HitInfo HitRandom(int grid){ // Hits a random, unhit space
     info.prevRow = row;
     info.prevCol = col;
     
-    int ship = shipGrid[col][row][grid]
+    int ship = shipGrid[col][row][grid];
     info.sunk = ship!=0?IsSunk(ship, grid):0;
     
     return info;
@@ -356,8 +356,8 @@ HitInfo SmartHit(HitInfo info, int grid){
     else{
         HitInfo randInfo = HitRandom(grid);
         if (randInfo.hit){
-            info = HitRandom(grid);
-        }
+            info = randInfo;
+        } 
     }
     
     return info;
