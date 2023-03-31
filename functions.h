@@ -207,8 +207,7 @@ HitInfo HitRandom(int grid){ // Hits a random, unhit space
     info.prevRow = row;
     info.prevCol = col;
     
-    int ship = shipGrid[col][row][grid];
-    info.sunk = ship!=0?IsSunk(ship, grid):0;
+    info.sunk = info.hit?IsSunk(shipGrid[col][row][grid], grid):0;
     
     return info;
 }
@@ -225,7 +224,7 @@ HitInfo SmartHit(HitInfo info, int grid){
     int row = prevRow;
     int col = prevCol;
     
-    if (info.hit == 1 && !info.sunk){
+    if (info.hit == 1 && info.sunk == 0){
         int dir = -1;
         if (IsInsideGrid(row,col-1) && info.hit){
             dir = HORIZONTAL;
@@ -259,6 +258,12 @@ HitInfo SmartHit(HitInfo info, int grid){
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
                 }
+                else{
+                    HitInfo randInfo = HitRandom(grid);
+                    if (randInfo.hit){
+                        info = randInfo;
+                    } 
+                }
             }
             else{ // Right
                 while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1){
@@ -276,6 +281,12 @@ HitInfo SmartHit(HitInfo info, int grid){
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
+                }
+                else{
+                    HitInfo randInfo = HitRandom(grid);
+                    if (randInfo.hit){
+                        info = randInfo;
+                    } 
                 }
             }
         }
@@ -298,6 +309,12 @@ HitInfo SmartHit(HitInfo info, int grid){
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
                 }
+                else{
+                    HitInfo randInfo = HitRandom(grid);
+                    if (randInfo.hit){
+                        info = randInfo;
+                    } 
+                }
             }
             else{ // Down
                 while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1){
@@ -315,6 +332,12 @@ HitInfo SmartHit(HitInfo info, int grid){
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
+                }
+                else{
+                    HitInfo randInfo = HitRandom(grid);
+                    if (randInfo.hit){
+                        info = randInfo;
+                    } 
                 }
             }
         }
