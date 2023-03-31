@@ -171,7 +171,7 @@ void RandomPlaceAll(int grid){ // Place all ships at random
 
 int IsInsideGrid(int row, int col){
     int inside = 0;
-    if (row < SIZE-1 && col < SIZE-1){
+    if (row < SIZE && col < SIZE){
         inside = 1;
     }
     return inside;
@@ -516,4 +516,21 @@ void DisplayGrids(){ // Display both grids on the screen side-by-side
     }
     
     printf("\n\n");
+}
+
+void DisplayTitle(){
+  char * title[6] = {
+        " ____            _____   _____   _      _____    _____   _    _   _____   _____  ",  
+        "|  _ \\     /\\   |_   _| |_   _| | |    |  ___|  / ____| | |  | | |_   _| |  __ \\ ", 
+        "| |_) |   /  \\    | |     | |   | |    | |__   | (___   | |__| |   | |   | |__) |",
+        "|  _ <   / /\\ \\   | |     | |   | |    |  __|   \\___ \\  |  __  |   | |   |  ___/ ",
+        "| |_) | / ____ \\  | |     | |   | |__  | |___   ____) | | |  | |  _| |_  | |     ",
+        "|____/ /_/    \\_\\ |_|     |_|   |____| |_____| |_____/  |_|  |_| |_____| |_|     "
+    };
+    printf("\n");
+    int i;
+    for (i = 0; i < 6; i++){
+        printf("%s\n",title[i]);
+    }
+    printf("\n");
 }
