@@ -188,20 +188,24 @@ int Hit(int row, int col, int grid){ // Hit a space, 0=Miss 1=Hit
     }
 }
 
-int HitRandom(int grid){ // Hits a random, unhit space
-    int row,col;
-    do{
-        row = rand()%SIZE+0;
-        col = rand()%SIZE+0;
-    } while(hitGrid[col][row][grid] != 0);
-    Hit(row,col,grid);
-}
-
 typedef struct hitInfo{
     int hit;
     int prevRow;
     int prevCol;
 } HitInfo;
+
+HitInfo HitRandom(int grid){ // Hits a random, unhit space
+    int row,col;
+    HitInfo info;
+    do{
+        row = rand()%SIZE+0;
+        col = rand()%SIZE+0;
+    } while(hitGrid[col][row][grid] != 0);
+    info.hit = Hit(row,col,grid);
+    info.prevRow = row;
+    info.prevCol = col;
+    return info;
+}
 
 HitInfo SmartHit(int prevRow, int prevCol, int grid){
     /* Hits according the last space hit and whether or not it knows
@@ -212,8 +216,6 @@ HitInfo SmartHit(int prevRow, int prevCol, int grid){
     
     int row = prevRow;
     int col = prevCol;
-    
-    printf("\nPrevHit: %d\n",hitGrid[prevCol][prevRow][grid]);
     
     if (hitGrid[prevCol][prevRow][grid] == 1){
         int dir = -1;
@@ -229,8 +231,6 @@ HitInfo SmartHit(int prevRow, int prevCol, int grid){
         else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 1){
             dir = VERTICAL;
         }
-        
-        printf("\nDir: %d\n",dir);
         
         if (dir == HORIZONTAL){
             int shiftDir = rand()%2;
@@ -338,14 +338,14 @@ HitInfo SmartHit(int prevRow, int prevCol, int grid){
                     break;
             }
         }
+        
+        info.hit = hit;
+        info.prevRow = row;
+        info.prevCol = col;
     }
     else{
-        hit = HitRandom(grid);
+        info = HitRandom(grid);
     }
-    
-    info.hit = hit;
-    info.prevRow = row;
-    info.prevCol = col;
     
     return info;
 }
