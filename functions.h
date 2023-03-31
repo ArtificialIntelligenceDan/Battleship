@@ -192,6 +192,7 @@ typedef struct hitInfo{
     int hit;
     int prevRow;
     int prevCol;
+    int sunk;
 } HitInfo;
 
 HitInfo HitRandom(int grid){ // Hits a random, unhit space
@@ -201,34 +202,41 @@ HitInfo HitRandom(int grid){ // Hits a random, unhit space
         row = rand()%SIZE+0;
         col = rand()%SIZE+0;
     } while(hitGrid[col][row][grid] != 0);
+    
     info.hit = Hit(row,col,grid);
     info.prevRow = row;
     info.prevCol = col;
+    
+    int ship = shipGrid[col][row][grid]
+    info.sunk = ship!=0?IsSunk(ship, grid):0;
+    
     return info;
 }
 
-HitInfo SmartHit(int prevRow, int prevCol, int grid){
+HitInfo SmartHit(HitInfo info, int grid){
     /* Hits according the last space hit and whether or not it knows
     the direction of the ship it hit */
     
-    HitInfo info;
-    int hit;
+    int prevRow = info.prevRow;
+    int prevCol = info.prevCol;
+    int hit = info.hit;
+    int sunk = info.sunk;
     
     int row = prevRow;
     int col = prevCol;
     
-    if (hitGrid[prevCol][prevRow][grid] == 1){
+    if (info.hit == 1 && !info.sunk){
         int dir = -1;
-        if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 1){
+        if (IsInsideGrid(row,col-1) && info.hit){
             dir = HORIZONTAL;
         }
-        else if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 1){
+        else if (IsInsideGrid(row,col+1) && info.hit){
             dir = HORIZONTAL;
         }
-        else if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 1){
+        else if (IsInsideGrid(row-1,col) && info.hit){
             dir = VERTICAL;
         }
-        else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 1){
+        else if (IsInsideGrid(row+1,col) && info.hit){
             dir = VERTICAL;
         }
         
@@ -339,12 +347,17 @@ HitInfo SmartHit(int prevRow, int prevCol, int grid){
             }
         }
         
-        info.hit = hit;
-        info.prevRow = row;
-        info.prevCol = col;
+        if (hit){
+            info.hit = hit;
+            info.prevRow = row;
+            info.prevCol = col;
+        }
     }
     else{
-        info = HitRandom(grid);
+        HitInfo randInfo = HitRandom(grid);
+        if (randInfo.hit){
+            info = HitRandom(grid);
+        }
     }
     
     return info;
