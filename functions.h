@@ -171,7 +171,7 @@ void RandomPlaceAll(int grid){ // Place all ships at random
 
 int IsInsideGrid(int row, int col){
     int inside = 0;
-    if (row < SIZE && col < SIZE){
+    if ((row < SIZE && col < SIZE) && (row > 0 && col > 0)){
         inside = 1;
     }
     return inside;
