@@ -207,7 +207,7 @@ HitInfo HitRandom(int grid){ // Hits a random, unhit space
     info.prevRow = row;
     info.prevCol = col;
     
-    info.sunk = info.hit?IsSunk(shipGrid[col][row][grid], grid):0;
+    info.sunk = info.hit ? IsSunk(shipGrid[col][row][grid], grid) : 0;
     
     return info;
 }
@@ -258,12 +258,6 @@ HitInfo SmartHit(HitInfo info, int grid){
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
                 }
-                else{
-                    HitInfo randInfo = HitRandom(grid);
-                    if (randInfo.hit){
-                        info = randInfo;
-                    } 
-                }
             }
             else{ // Right
                 while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1){
@@ -281,12 +275,6 @@ HitInfo SmartHit(HitInfo info, int grid){
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
-                }
-                else{
-                    HitInfo randInfo = HitRandom(grid);
-                    if (randInfo.hit){
-                        info = randInfo;
-                    } 
                 }
             }
         }
@@ -309,12 +297,6 @@ HitInfo SmartHit(HitInfo info, int grid){
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
                 }
-                else{
-                    HitInfo randInfo = HitRandom(grid);
-                    if (randInfo.hit){
-                        info = randInfo;
-                    } 
-                }
             }
             else{ // Down
                 while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1){
@@ -332,12 +314,6 @@ HitInfo SmartHit(HitInfo info, int grid){
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
-                }
-                else{
-                    HitInfo randInfo = HitRandom(grid);
-                    if (randInfo.hit){
-                        info = randInfo;
-                    } 
                 }
             }
         }
@@ -370,11 +346,11 @@ HitInfo SmartHit(HitInfo info, int grid){
             }
         }
         
-        if (hit){
-            info.hit = hit;
-            info.prevRow = row;
-            info.prevCol = col;
-        }
+        // if (hit){
+        //     info.hit = hit;
+        //     info.prevRow = row;
+        //     info.prevCol = col;
+        // }
     }
     else{
         HitInfo randInfo = HitRandom(grid);
