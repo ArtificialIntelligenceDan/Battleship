@@ -356,11 +356,11 @@ HitInfo SmartHit(HitInfo info, int grid){
     else{
         HitInfo randInfo = HitRandom(grid);
         info.hit = randInfo.hit;
-        info.sunk = randInfo.sunk;
-        if (randInfo.hit){
+        if (randInfo.hit || info.sunk){
             info.prevRow = randInfo.prevRow;
             info.prevCol = randInfo.prevCol;
         } 
+        info.sunk = randInfo.sunk;
     }
     
     return info;
