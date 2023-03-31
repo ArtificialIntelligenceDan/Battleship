@@ -242,9 +242,9 @@ HitInfo SmartHit(HitInfo info, int grid){
         if (dir == HORIZONTAL){
             int shiftDir = rand()%2;
             if (shiftDir == 0){ // Left
-                while(IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 1){
+                do{
                     col--;
-                }
+                }while(IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 1);
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
@@ -252,7 +252,7 @@ HitInfo SmartHit(HitInfo info, int grid){
                 else{
                     do{
                         col++;
-                    } while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1);
+                    }while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1);
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
@@ -260,9 +260,9 @@ HitInfo SmartHit(HitInfo info, int grid){
                 }
             }
             else{ // Right
-                while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1){
+                do{
                     col++;
-                }
+                }while(IsInsideGrid(row,col+1) && hitGrid[col][row][grid] == 1);
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
@@ -270,7 +270,7 @@ HitInfo SmartHit(HitInfo info, int grid){
                 else{
                     do{
                         col--;
-                    } while(IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 1);
+                    }while(IsInsideGrid(row,col-1) && hitGrid[col][row][grid] == 1);
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
@@ -281,9 +281,9 @@ HitInfo SmartHit(HitInfo info, int grid){
         else if (dir == VERTICAL){
             int shiftDir = rand()%2;
             if (shiftDir == 0){ // Up
-                while(IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 1){
+                do{
                     row--;
-                }
+                }while(IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 1);
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
@@ -291,7 +291,7 @@ HitInfo SmartHit(HitInfo info, int grid){
                 else{
                     do{
                         row++;
-                    } while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1);
+                    }while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1);
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
@@ -299,9 +299,9 @@ HitInfo SmartHit(HitInfo info, int grid){
                 }
             }
             else{ // Down
-                while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1){
+                do{
                     row++;
-                }
+                }while(IsInsideGrid(row+1,col) && hitGrid[col][row][grid] == 1);
                 
                 if (hitGrid[col][row][grid] == 0){
                     hit = Hit(row,col,grid);
@@ -309,7 +309,7 @@ HitInfo SmartHit(HitInfo info, int grid){
                 else{
                     do{
                         row--;
-                    } while(IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 1);
+                    }while(IsInsideGrid(row-1,col) && hitGrid[col][row][grid] == 1);
                 }
                 
                 if (hitGrid[col][row][grid] == 0){
@@ -318,31 +318,20 @@ HitInfo SmartHit(HitInfo info, int grid){
             }
         }
         else{ // If direction not known
-            int shiftDir = rand()%4;
-            switch (shiftDir){
-                case 0: // Left
-                    if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 0){
-                        hit = Hit(row,col-1,grid);
-                        break;
-                    }
-                case 1: // Right
-                    if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 0){
-                        hit = Hit(row,col+1,grid);
-                        break;
-                    }
-                case 2: // Up
-                    if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 0){
-                        hit = Hit(row-1,col,grid);
-                        break;
-                    }
-                case 3: // Down
-                    if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 0){
-                        hit = Hit(row+1,col,grid);
-                        break;
-                    }
-                default:
-                    printf("Something is wrong! No 1x1 ships allowed!");
-                    break;
+            if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 0){
+                hit = Hit(row,col-1,grid); // Left
+            }
+            else if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 0){
+                hit = Hit(row,col+1,grid); // Right
+            }
+            else if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 0){
+                hit = Hit(row-1,col,grid); // Up
+            }
+            else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 0){
+                hit = Hit(row+1,col,grid); // Down
+            }
+            else{
+                printf("Problem encountered. Ship cannot be 1x1\n");
             }
         }
         
