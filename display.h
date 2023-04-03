@@ -1,3 +1,18 @@
+/*******************************************************************************
+* File: display.h
+* Dependencies: grids.h
+*
+* Purpose: Contains functions and variables used to display information on the 
+*          screen.
+* 
+* Course: CS125
+* Version:	1.0 - 2/11/23 - Aidan Kihm
+*
+* Resources: 
+* https://stackoverflow.com/questions/12824134/undefined-reference-to-pow-in-c-
+* despite-including-math-h
+*******************************************************************************/
+
 #define SIZE 10
 
 #define BLK "\e[0;30m"
