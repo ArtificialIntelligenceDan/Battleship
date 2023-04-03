@@ -466,7 +466,7 @@ void DisplayGrids(){ // Display both grids on the screen side-by-side
     UpdateDisplayGrid(OPPONENT);
     
     int row, col;
-    printf(" ");
+    printf("\n ");
     int grid;
     for (grid = 0; grid < 2; grid++){
         for (col = 0; col < 41; col++){ // Print column letters
