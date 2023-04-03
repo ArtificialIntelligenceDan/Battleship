@@ -9,8 +9,8 @@
 * Version:	1.0 - 2/11/23 - Aidan Kihm
 *
 * Resources: 
-* https://stackoverflow.com/questions/12824134/undefined-reference-to-pow-in-c-
-* despite-including-math-h
+* https://textkool.com/en/ascii-art-generator?hl=default&vl=default&font=
+*   Red%20Phoenix&text=Your%20text%20here%20
 *******************************************************************************/
 
 #define SIZE 10
