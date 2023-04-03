@@ -15,8 +15,7 @@ int main()
     RandomPlaceAll(OPPONENT);
 
     DisplayGrids();
-    int i, ansPlace = 0, orientation, row, canPlace = 0, rowCheck, orientationCheck, placeCheck;
-    HitInfo info;
+    int i, smartHit, ansPlace = 0, orientation, row, canPlace = 0, rowCheck, orientationCheck, placeCheck;
     char col;
     int carCount = 0;
     int crCount = 0;
@@ -31,90 +30,76 @@ int main()
 
     printf("Type 1 to place your own ships or 2 for random ship placement: ");
     placeCheck = scanf("%d", &ansPlace);
-    while((ansPlace != 1 && ansPlace != 2) || placeCheck != 1)
-    {
+    while((ansPlace != 1 && ansPlace != 2) || placeCheck != 1){
       printf("TryAgain.\nType 1 to place your own ships or 2 for random ship placement: ");
       placeCheck = scanf("%*c%d", &ansPlace);
-
     }
-    if(ansPlace == 1)
-    {
-        for(i=1; i<=5; i++)
-        {
-            if(i == CARRIER)
-                printf("Place your Carrier (Size 5)\n");
-            else if(i == BATTLESHIP)
-                printf("Place your Battleship (Size 4)\n");
-            else if(i == CRUISER)
-                printf("Place your Cruiser (Size 3)\n");
-            else if(i == SUBMARINE)
-                printf("Place your Submarine (Size 3)\n");
-            else if(i == DESTROYER)
-                printf("Place your DESTROYER (Size 2)\n");
-	    printf("Type 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
-            orientationCheck =  scanf("%d", &orientation);
-            while((orientation != 0 && orientation != 1) || orientationCheck != 1){
-	      printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
-              orientationCheck = scanf("%*c%d", &orientation);
-	    }
-            printf("Choose a Column: ");
-            scanf("%*c%c", &col);
-	    while(col < 65 || col > 74){
-              printf("Try Again.\nChoose a Column: ");
-              scanf("%*c%c", &col);
-	    } 
-            printf("Choose a Row: ");
-            rowCheck = scanf("%d", &row);
-	    while(row < 1 || row > 10 || rowCheck != 1){
-	      printf("Try Again.\nChoose a Row: ");
-              rowCheck = scanf("%*c%d", &row);
-	    }
-            printf("\n");
-            canPlace = 0;
-            canPlace = PlaceShip(i, PLAYER, orientation, row-1, col-65);
-	    while(canPlace == 0){
-              printf("THATS NOT ALLOWED!\nTRY AGAIN!\n");
-              printf("Type 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
-              orientationCheck = scanf("%d", &orientation);
-	      while((orientation != 0 && orientation != 1) || orientationCheck != 1 ){
-                printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
-                orientationCheck = scanf("%*c%d", &orientation);
-              }
-              printf("Choose a Column: ");
-              scanf("%*c%c", &col);
-	      while(col < 65 || col > 74){
-                printf("Try Again.\nChoose a Column: ");
-                scanf("%*c%c", &col);
-              }
-              printf("Choose a Row: ");
-              rowCheck = scanf("%d", &row);
-	      while(row < 1 || row > 10 || rowCheck != 1){
-                printf("Try Again.\nChoose a Row: ");
-                rowCheck = scanf("%*c%d", &row);
-              }
-              printf("\n");
-              canPlace = PlaceShip(i, PLAYER, orientation, row-1, col-65);
-            }
-
-         
-	      
-              
-            DisplayGrids();
+    if(ansPlace == 1){
+      for(i=1; i<=5; i++){
+        if(i == CARRIER)
+          printf("Place your Carrier (Size 5)\n");
+        else if(i == BATTLESHIP)
+          printf("Place your Battleship (Size 4)\n");
+        else if(i == CRUISER)
+          printf("Place your Cruiser (Size 3)\n");
+        else if(i == SUBMARINE)
+          printf("Place your Submarine (Size 3)\n");
+        else if(i == DESTROYER)
+          printf("Place your DESTROYER (Size 2)\n");
+        printf("Type 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
+        orientationCheck =  scanf("%d", &orientation);
+        while((orientation != 0 && orientation != 1) || orientationCheck != 1){
+	  printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
+          orientationCheck = scanf("%*c%d", &orientation);
 	}
-
-         }
-
-    else if(ansPlace == 2)
-    {
-        RandomPlaceAll(PLAYER);
+        printf("Choose a Column: ");
+        scanf("%*c%c", &col);
+	while(col < 65 || col > 74){
+          printf("Try Again.\nChoose a Column: ");
+          scanf("%*c%c", &col);
+	} 
+        printf("Choose a Row: ");
+        rowCheck = scanf("%d", &row);
+	while(row < 1 || row > 10 || rowCheck != 1){
+	  printf("Try Again.\nChoose a Row: ");
+          rowCheck = scanf("%*c%d", &row);
+	}
+        printf("\n");
+        canPlace = 0;
+        canPlace = PlaceShip(i, PLAYER, orientation, row-1, col-65);
+	while(canPlace == 0){
+          printf("THATS NOT ALLOWED!\nTRY AGAIN!\n");
+          printf("Type 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
+          orientationCheck = scanf("%d", &orientation);
+	  while((orientation != 0 && orientation != 1) || orientationCheck != 1 ){
+            printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
+            orientationCheck = scanf("%*c%d", &orientation);
+          }
+          printf("Choose a Column: ");
+          scanf("%*c%c", &col);
+	  while(col < 65 || col > 74){
+            printf("Try Again.\nChoose a Column: ");
+            scanf("%*c%c", &col);
+          }
+          printf("Choose a Row: ");
+          rowCheck = scanf("%d", &row);
+	  while(row < 1 || row > 10 || rowCheck != 1){
+            printf("Try Again.\nChoose a Row: ");
+            rowCheck = scanf("%*c%d", &row);
+          }
+          printf("\n");
+          canPlace = PlaceShip(i, PLAYER, orientation, row-1, col-65);
+        }          
         DisplayGrids();
+      }
     }
-	DrawGrid(OPPONENT);    
+    else if(ansPlace == 2){
+      RandomPlaceAll(PLAYER);
+      DisplayGrids();
+    }    
     int hitRow, ranRow, ranCol, hit, ranHit;     // Player turn
     char hitCol;
-
     while(AllSunk(PLAYER) == 0 && AllSunk(OPPONENT) == 0){
-
     do{
       printf("Choose a Target!\n");  //Player Turn
       printf("Column: ");
@@ -128,9 +113,9 @@ int main()
       while(hitRow < 1 || hitRow > 10 || rowCheck != 1){
         printf("Try Again.\nChoose a Row: ");
         rowCheck = scanf("%*c%d", &hitRow);
-      }
-	
+      }	
       hit = Hit(hitRow-1, hitCol-65, OPPONENT);
+      printf("\n");
       DisplayGrids();
       if(hit == 1){
         printf("HIT!!!\n");
@@ -160,27 +145,24 @@ int main()
             printf("You Sank My Destroyer!\n");
  	    dCount++;
 	  }
-       }
+        }
       }
       if(AllSunk(PLAYER) == 1 || AllSunk(OPPONENT) == 1)
 	break;
     }while(hit == 1);
     if(AllSunk(PLAYER) == 1 || AllSunk(OPPONENT) == 1)
-        break;
+      break;
     sleep(1.5);
     printf("Opponents turn\n");
     sleep(1.5);			      //Computer Turn
     do{
-	info = SmartHit(info, PLAYER);
-	
- 
-      
-      if(info.hit == 1){
-	DisplayGrids();
+      smartHit = SmartHit(PLAYER);      
+      if(smartHit == 1){
+        DisplayGrids();
         printf("OPPONENT HIT A SHIP!!! \nOPPONENT TAKING ANOTHER TURN\n");
 	sleep(1.5);
       }
-      else if(info.hit == 0){
+      else if(smartHit == 0){
 	DisplayGrids();
         printf("OPPONENT MISSED YOUR SHIP!!\n");
       }
@@ -211,14 +193,14 @@ int main()
       sleep(1.5);
       if(AllSunk(PLAYER) == 1 || AllSunk(OPPONENT) == 1)
         break;    
-    }while(info.hit == 1);
-  }
+      }while(smartHit == 1);
+    }
 
-  printf("GAME OVER!\n");
-  if(AllSunk(PLAYER) == 1)
-    printf("YOU LOST!\n");
-  else if(AllSunk(OPPONENT) == 1)
-    printf("YOU WON!\n");
+    printf("GAME OVER!\n");
+    if(AllSunk(PLAYER) == 1)
+      printf("YOU LOST!\n");
+    else if(AllSunk(OPPONENT) == 1)
+      printf("YOU WON!\n");
   
 return 0;
 }
