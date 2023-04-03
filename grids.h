@@ -1,3 +1,17 @@
+/*******************************************************************************
+* File: display.h
+* Dependencies: N/A
+*
+* Purpose: Contains variables that store grid contents and functions used to 
+*          alter and interpret grid contents.
+* 
+* Course: CS125
+* Version:	1.0 - 4/3/23 - Aidan Kihm
+*
+* Resources: 
+*
+*******************************************************************************/
+
 #define SIZE 10
 
 #define BLK "\e[0;30m"
