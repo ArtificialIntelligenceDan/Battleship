@@ -2,39 +2,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define SIZE 10
-
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
-
-// Grid Variables
-const int OPPONENT = 0;
-const int PLAYER = 1;
+#include "grids.h"
+#include "display.h"
 
 int shipGrid[SIZE][SIZE][2];
 int hitGrid[SIZE][SIZE][2];
 //          COLS  ROWS  ^ 0=Opponent 1=Player
 
-// Ship Variables
-const int CARRIER = 1;
-const int BATTLESHIP = 2;
-const int CRUISER = 3;
-const int SUBMARINE = 4;
-const int DESTROYER = 5;
-
 const int LENGTH[6] = {0, 5,4,3,3,2};
 //         placeholder ^
-
-// Orientation Variables
-const int HORIZONTAL = 0;
-const int VERTICAL = 1;
 
 // Display Variables
 char gridUnit[3][5] = {"+---+",
@@ -233,16 +209,16 @@ int SmartHit(int grid){
         int dir = -1;
         int attemptedDir = -1;
         
-        if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 1 && !IsSunk(shipGrid[col-1][row][grid])){
+        if (IsInsideGrid(row,col-1) && hitGrid[col-1][row][grid] == 1 && !IsSunk(shipGrid[col-1][row][grid], grid)){
             dir = HORIZONTAL;
         }
-        else if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 1 && !IsSunk(shipGrid[col+1][row][grid])){
+        else if (IsInsideGrid(row,col+1) && hitGrid[col+1][row][grid] == 1 && !IsSunk(shipGrid[col+1][row][grid], grid)){
             dir = HORIZONTAL;
         }
-        else if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 1 && !IsSunk(shipGrid[col][row-1][grid])){
+        else if (IsInsideGrid(row-1,col) && hitGrid[col][row-1][grid] == 1 && !IsSunk(shipGrid[col][row-1][grid], grid)){
             dir = VERTICAL;
         }
-        else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 1 && !IsSunk(shipGrid[col][row+1][grid])){
+        else if (IsInsideGrid(row+1,col) && hitGrid[col][row+1][grid] == 1 && !IsSunk(shipGrid[col][row+1][grid], grid)){
             dir = VERTICAL;
         }
         
