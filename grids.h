@@ -25,7 +25,7 @@ int IsOnGrid(int, int); // Checks if ship is already on grid
 
 int PlaceShip(int, int, int, int, int); // Places ship
 
-void DrawGrid(int); // Prints all values in ship grid
+void DrawShipGrid(int); // Prints all values in ship grid
 
 void DrawHitGrid(int); // Prints all values in hit grid
 

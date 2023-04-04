@@ -86,12 +86,12 @@ int PlaceShip(int ship, int grid, int orient, int row, int col){ // Place ship
     return canPlace;
 }
 
-void DrawGrid(int grid){ // Print all values in ship grid
+void DrawShipGrid(int grid){ // Print all values in ship grid
     int y;
     for (y = 0; y < SIZE; y++){
         int x;
         for (x = 0; x < SIZE; x++){
-            printf("%d ", shipGrid[x][y][grid]);
+            printf("%2d", shipGrid[x][y][grid]);
         }
         printf("\n");
     }
@@ -103,7 +103,7 @@ void DrawHitGrid(int grid){ // Print all values in hit grid
     for (y = 0; y < SIZE; y++){
         int x;
         for (x = 0; x < SIZE; x++){
-            printf("%d ", hitGrid[x][y][grid]);
+            printf("%2d", hitGrid[x][y][grid]);
         }
         printf("\n");
     }
