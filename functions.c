@@ -1,3 +1,17 @@
+/*******************************************************************************
+* File: functions.c
+* Dependencies: grids.h, display.h
+*
+* Purpose: Defines all functions and global variables.
+* 
+* Course: CS125
+* Version:	1.0 - 4/3/23 - Aidan Kihm
+*           1.1 - 4/6/23 - Aidan Kihm
+*
+* Resources: https://textkool.com/en/ascii-art-generator?hl=default&vl=default&font=
+*            Red%20Phoenix&text=Your%20text%20here%20
+*******************************************************************************/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

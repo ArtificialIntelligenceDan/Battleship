@@ -1,4 +1,17 @@
-//Code written by Marcos
+/*******************************************************************************
+* File: main.c
+* Dependencies: grids.h, display.h, functions.c
+*
+* Purpose: Facilitates gameplay and handles user input.
+* 
+* Course: CS125
+* Version:	1.0 - 4/3/23 - Marcos Smith
+*           1.1 - 4/6/23 - Marcos Smith
+*
+* Resources: 
+*
+*******************************************************************************/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,6 +24,7 @@
 int main()
 {
     srand(time(NULL));
+    ClearScreen(1000);
     DisplayTitle();              //Displaying Title and Placing Opponent Ships
     sleep(3);
     FILE *scoreBoard;
@@ -62,52 +76,56 @@ int main()
             printf("Type 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");  
             orientationCheck =  scanf("%d", &orientation);                                            //scans for orientation followed by error checking
             while((orientation != 0 && orientation != 1) || orientationCheck != 1){
-	        printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
+	              printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
                 orientationCheck = scanf("%*c%d", &orientation);
-	    }
+	          }
             printf("Choose a Column: ");    
             scanf("%*c%c", &col);                      //scans in column followed by error checking
-	    while(col < 65 || col > 74){
+	          while(col < 65 || col > 74){
                 printf("Try Again.\nChoose a Column: ");
                 scanf("%*c%c", &col);
-	    } 
+	          } 
             printf("Choose a Row: ");                  //scans in row followed by error checking
             rowCheck = scanf("%d", &row);
-	    while(row < 1 || row > 10 || rowCheck != 1){
-	        printf("Try Again.\nChoose a Row: ");
+	          while(row < 1 || row > 10 || rowCheck != 1){
+	              printf("Try Again.\nChoose a Row: ");
                 rowCheck = scanf("%*c%d", &row);
-	    }
+	          }
             printf("\n");
             canPlace = 0;
             canPlace = PlaceShip(i, PLAYER, orientation, row-1, col-65);
-	    while(canPlace == 0){                                            //checks to make sure ship can be placed where it was told
+	          while(canPlace == 0){                                            //checks to make sure ship can be placed where it was told
                 printf("THATS NOT ALLOWED!\nTRY AGAIN!\n");
                 printf("Type 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
                 orientationCheck = scanf("%d", &orientation);
-	        while((orientation != 0 && orientation != 1) || orientationCheck != 1 ){
+                while((orientation != 0 && orientation != 1) || orientationCheck != 1 ){
                     printf("Try Again.\nType 0 for Horizontal (right) Placement and 1 for Vertical (down) Placement: ");
                     orientationCheck = scanf("%*c%d", &orientation);
                 }
                 printf("Choose a Column: ");                     //scans in column followed by error checking
                 scanf("%*c%c", &col);
-	        while(col < 65 || col > 74){
+	              while(col < 65 || col > 74){
                     printf("Try Again.\nChoose a Column: ");
                     scanf("%*c%c", &col);
                 }
                 printf("Choose a Row: ");                       
                 rowCheck = scanf("%d", &row);                  //scans in row followed by error checking
-	        while(row < 1 || row > 10 || rowCheck != 1){
+	              while(row < 1 || row > 10 || rowCheck != 1){
                     printf("Try Again.\nChoose a Row: ");
                     rowCheck = scanf("%*c%d", &row);
                 }
                 printf("\n");
                 canPlace = PlaceShip(i, PLAYER, orientation, row-1, col-65);
             }          
+            ClearScreen(100);
+            DisplayTitle();
             DisplayGrids();
         }
     }
     else if(ansPlace == 2){
         RandomPlaceAll(PLAYER);   //Random Ship placement option
+        ClearScreen(100);
+        DisplayTitle();
         DisplayGrids();
     }    
     int hitRow, ranRow, ranCol, hit, ranHit;     // Player turn code begins
@@ -130,6 +148,8 @@ int main()
             hit = Hit(hitRow-1, hitCol-65, OPPONENT);         //hit function to hit ship
             score++;
             printf("\n");
+            ClearScreen(100);
+            DisplayTitle();
             DisplayGrids();
             if(hit == 1){                         //if statement to display if a ship was hit or missed
                 printf("HIT!!!\n");
@@ -172,12 +192,16 @@ int main()
         do{
             smartHit = SmartHit(PLAYER);            //smart hit function allows the opponent to not guess randomly when they hit a ship before     
             if(smartHit == 1){
+                ClearScreen(100);
+                DisplayTitle();
                 DisplayGrids();
                 printf("OPPONENT HIT A SHIP!!! \nOPPONENT TAKING ANOTHER TURN\n");  //if statements to print the opponent missed or hit
 	        sleep(1.5);
             }
             else if(smartHit == 0){
-	        DisplayGrids();
+                ClearScreen(100);
+                DisplayTitle();
+    	          DisplayGrids();
                 printf("OPPONENT MISSED YOUR SHIP!!\n");
             }
             for(i=1; i<=5; i++){                          //Checks if a player boat was sunk and displays if one is

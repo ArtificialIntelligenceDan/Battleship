@@ -1,3 +1,17 @@
+/*******************************************************************************
+* File: grids.h
+* Dependencies:
+*
+* Purpose: Contains functions and variables used to interact with data grids
+* 
+* Course: CS125
+* Version:	1.0 - 4/3/23 - Aidan Kihm
+*           1.1 - 4/6/23 - Aidan Kihm
+*
+* Resources: 
+*
+*******************************************************************************/
+
 #define SIZE 10
 
 #define BLK "\e[0;30m"
