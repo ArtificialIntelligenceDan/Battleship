@@ -32,23 +32,23 @@ int main()
     int sCountO = 0;
     int dCountO = 0;
 
-    scoreBoard = fopen("scoreBoard.txt", "r");                      //read and writes to another file to keep highscore
+    scoreBoard = fopen("scoreBoard.txt", "r+");                      //read and writes to another file to keep highscore, displays at beggining of game
     int matches = fscanf(scoreBoard, "%d", &highScore);
     if(matches > 0)
         printf("The Current Highscore is %d\n", highScore);
     else{
-        printf("There is no Current High Score");
+        printf("There is no Current High Score\n");
         highScore = 1000;
     }  
     fclose(scoreBoard);
-    printf("Type 1 to place your own ships or 2 for random ship placement: ");        //Ship Placement
+    printf("Type 1 to place your own ships or 2 for random ship placement: ");                                       //Ship Placement
     placeCheck = scanf("%d", &ansPlace);
     while((ansPlace != 1 && ansPlace != 2) || placeCheck != 1){
         printf("TryAgain.\nType 1 to place your own ships or 2 for random ship placement: ");
         placeCheck = scanf("%*c%d", &ansPlace);
     }
     if(ansPlace == 1){
-        for(i=1; i<=5; i++){                              //for loop to go through all ships to be placed
+        for(i=1; i<=5; i++){                                                                                      //for loop to go through all ships to be placed
             if(i == CARRIER)
                 printf("Place your Carrier (Size 5)\n");
             else if(i == BATTLESHIP)
@@ -209,10 +209,11 @@ int main()
                 break;    
         }while(smartHit == 1);                                  //end of do while loop for opponent, checks if they hit
     }
-    if(score < highScore){                                   //checks if the number of turns is less that the previous best score, displays if lower
-        fopen("scoreBoard.txt", "w");
-        fprintf(scoreBoard, "%d", highScore);
+    if(score < highScore && AllSunk(OPPONENT) == 1){                                   //checks if the number of turns is less that the previous best score, displays if lower
+        scoreBoard = fopen("scoreBoard.txt", "w");
+        fprintf(scoreBoard, "%d", score);
         fclose(scoreBoard); 
+	printf("New High Score of %d\n", score);
     } 
     printf("GAME OVER!\n");                   //  Prints game over
     if(AllSunk(PLAYER) == 1)                 // if and else if statement decides if players or opponents ship sank and prints you won or you lost
