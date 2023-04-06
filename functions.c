@@ -556,3 +556,11 @@ void DisplayTitle(){
     }
     printf("\n");
 }
+
+void ClearScreen(int lines){
+  int y;
+  for (y = 0; y < lines; y++){
+      printf("\x1b[1F"); // Move to beginning of previous line
+      printf("\x1b[2K"); // Clear entire line
+  }
+}
