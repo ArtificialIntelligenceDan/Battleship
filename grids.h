@@ -55,7 +55,7 @@ int Hit(int, int, int); // Hits a space, 0=Miss 1=Hit
 
 int HitRandom(int); // Hits a random, unhit space
 
-int SmartHit(int); 
+int SmartHit(int); // Scans grid for hit and unsunk locations and hits adjacent to it if possible
 
 int IsSunk(int, int); // Checks if ship has been sunk
 
