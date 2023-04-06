@@ -17,6 +17,6 @@ void UpdateDisplayGrid(int); // Update the specified displayGrid array
 
 void DisplayGrids(); // Display both grids on the screen side-by-side
 
-void DisplayTitle();
+void DisplayTitle(); // Display game title as ASCII text
 
-void ClearScreen(int);
+void ClearScreen(int); // Clear the terminal
